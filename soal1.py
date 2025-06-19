@@ -1,15 +1,9 @@
 import heapq
 
 def a_star_search(graph, start, goal):
-    """
-    Fungsi utama untuk menjalankan algoritma A* pada Peta Rumania
-    dengan output yang detail untuk setiap langkah.
-    """
-    # Priority queue untuk menyimpan simpul yang akan dikunjungi.
-    # Format: (f_cost, g_cost, current_city, path)
+
     open_list = [(graph[start]['h'], 0, start, [start])]
     
-    # Set untuk menyimpan kota yang sudah dieksplorasi.
     closed_set = set()
     
     langkah = 0
@@ -17,7 +11,6 @@ def a_star_search(graph, start, goal):
         langkah += 1
         print(f"\n===== LANGKAH {langkah} =====")
         
-        # 1. Ambil kota dengan f_cost terendah dari priority queue.
         _f_cost, g_cost, current_city, path = heapq.heappop(open_list)
 
         print(f"Kota terpilih dari antrean: {current_city}")
@@ -28,28 +21,24 @@ def a_star_search(graph, start, goal):
             print(f"   -> Kota {current_city} sudah pernah dieksplorasi. Melanjutkan...")
             continue
         
-        # Tandai kota saat ini sebagai sudah dieksplorasi.
         closed_set.add(current_city)
 
-        # 2. Jika kota saat ini adalah tujuan, kembalikan hasilnya.
         if current_city == goal:
             print(f"\n>> TUJUAN '{goal}' TERCAPAI! <<")
             return path, g_cost
 
         print(f"\n--- Mengeksplorasi Tetangga dari {current_city} ---")
-        # 3. Eksplorasi semua tetangga dari kota saat ini.
+
         for neighbor, distance in graph[current_city]['neighbors'].items():
             if neighbor in closed_set:
                 continue
             
             print(f"  * Tetangga: {neighbor}")
             
-            # Hitung biaya baru untuk tetangga.
             new_g_cost = g_cost + distance
             h_cost = graph[neighbor]['h']
             new_f_cost = new_g_cost + h_cost
             
-            # Menampilkan detail perhitungan
             print(f"    -> Jarak dari {current_city} ke {neighbor}: {distance} km")
             print(f"    -> Kalkulasi g(n) baru: {g_cost} (g dari {current_city}) + {distance} km = {new_g_cost} km")
             print(f"    -> Heuristik h(n) dari {neighbor}: {h_cost} km")
@@ -61,7 +50,6 @@ def a_star_search(graph, start, goal):
             
     return None, None
 
-# --- Cara Penggunaan Program ---
 if __name__ == "__main__":
     ROMANIA_MAP = {
         'Arad': {'neighbors': {'Zerind': 75, 'Sibiu': 140, 'Timisoara': 118}, 'h': 366},
